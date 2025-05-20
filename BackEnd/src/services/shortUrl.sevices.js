@@ -1,12 +1,15 @@
 import { generateNanoId } from "../utils/generateNanoId.js";
 import ShortUrlModel from "../models/shortUrl.model.js";
 
-export const createShortUrlService = async (url) => {
-    const shortUrl = generateNanoId(6);
+export const createShortUrlService = async (url, req) => {
+    const shortUrl = generateNanoId(7);
     const newShortUrl = new ShortUrlModel({
         fullUrl: url,
         shortUrl: shortUrl
     });
+    if(req.user){
+        newShortUrl.userId = req.user._id;
+    }
     await newShortUrl.save();
     return shortUrl;
 };
